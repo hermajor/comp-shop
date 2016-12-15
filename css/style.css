@@ -1,0 +1,42 @@
+.form {
+    width: 350px;
+    padding: 10px;
+    background-color: turquoise;
+    border-radius: 10px;
+    border: 1px solid black;
+    display: inline-block;
+    text-align: right;
+}
+select {
+    width: 180px;
+}
+
+.form_bd {
+    background-color: lightblue;
+    margin-left: 50px;
+}
+
+table {
+    border-collapse: collapse;
+    /*width: 350px;*/
+}
+th {
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    color: white;
+    background-color: darkcyan;
+}
+td {
+    border-bottom:1px solid lightgray;
+    padding: 10px;
+}
+
+
+.elements {
+    background-color: lightyellow;
+}
+.elements:nth-child(2n){
+    background-color: lightblue;
+}
