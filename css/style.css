@@ -11,14 +11,8 @@ select {
     width: 180px;
 }
 
-.form_bd {
-    background-color: lightblue;
-    margin-left: 50px;
-}
-
 table {
     border-collapse: collapse;
-    /*width: 350px;*/
 }
 th {
     padding: 10px;
@@ -32,7 +26,6 @@ td {
     border-bottom:1px solid lightgray;
     padding: 10px;
 }
-
 
 .elements {
     background-color: lightyellow;
