@@ -57,10 +57,10 @@ class Accessories extends Model
 
             $sum = $motherboard[2] + $video_card[2] + $ram[2] + $hd[2];
 
-//            $result = $this->connection->prepare("INSERT comp_shop.order_list (motherboard, video_card, ram, hd, total) VALUES (?, ?, ?, ?, ?)");
-//            $result->bind_param("ssssi", $motherboard[1], $video_card[1], $ram[1], $hd[1], $sum);
-//            $result->execute();
-//            $result->close();
+            $result = $this->connection->prepare("INSERT comp_shop.order_list (motherboard, video_card, ram, hd, total) VALUES (?, ?, ?, ?, ?)");
+            $result->bind_param("ssssi", $motherboard[1], $video_card[1], $ram[1], $hd[1], $sum);
+            $result->execute();
+            $result->close();
 
             $table = [$motherboard[1], $video_card[1], $ram[1], $hd[1], $sum];
 
