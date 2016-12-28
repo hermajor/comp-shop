@@ -1,16 +1,18 @@
 <?php
-//коннект к БД
-include("database/db_connect.php");
-include ("model/Accessories.php");
+include("database/BDinfo.php");
 
-$accessories = new Accessories($connection);
+spl_autoload_register(function($class){
+    include_once('model/'.$class.'.php');
+});
+
+$accessories = new Accessories($host, $login, $password, $db);
 
 $motherboard = $accessories->getAccessories('motherboard');
 $video_card = $accessories->getAccessories('video_card');
 $ram = $accessories->getAccessories('ram');
 $hd = $accessories->getAccessories('hd');
 
-$emptyValueStr = '0, -, 0, 0, 0, 0, 0, 0';//строка-"массив" который будем подставлять в форму по умолчанию(при пустых значениях)
+$emptyValueStr = '0|-|0|0|0|0|0|0';//строка-"массив" который будем подставлять в форму по умолчанию(при пустых значениях)
 ?>
 
 <!DOCTYPE HTML>
@@ -28,8 +30,8 @@ $emptyValueStr = '0, -, 0, 0, 0, 0, 0, 0';//строка-"массив" кото
             <select size="1" name="motherboard">
                 <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
-                foreach ($motherboard as $mod){
-                    $arraystr = implode(",", $mod);//записываем массив в строку - элементы разделены запятой ","
+                foreach ($motherboard as $key=>$mod){
+                    $arraystr = implode("|", $mod);//записываем массив в строку - элементы разделены запятой ","
                     echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";//value формы может передавать только строки
                 }
                 ?>
@@ -40,7 +42,7 @@ $emptyValueStr = '0, -, 0, 0, 0, 0, 0, 0';//строка-"массив" кото
                 <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
                 foreach ($video_card as $mod){
-                    $arraystr = implode(",", $mod);
+                    $arraystr = implode("|", $mod);
                     echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";
                 }
                 ?>
@@ -51,7 +53,7 @@ $emptyValueStr = '0, -, 0, 0, 0, 0, 0, 0';//строка-"массив" кото
                 <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
                 foreach ($ram as $mod){
-                    $arraystr = implode(",", $mod);
+                    $arraystr = implode("|", $mod);
                     echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";
                 }
                 ?>
@@ -62,16 +64,16 @@ $emptyValueStr = '0, -, 0, 0, 0, 0, 0, 0';//строка-"массив" кото
                 <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
                 foreach ($hd as $mod){
-                    $arraystr = implode(",", $mod);
+                    $arraystr = implode("|", $mod);
                     echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";
                 }
                 ?>
             </select><br><br>
 
-            <br><br><input name="button2" type="submit" value="Оформить заказ и занести в БД">
+            <br><input name="button" type="submit" value="Оформить заказ и занести в БД">
         </form>
     </div>
 
-    <?php echo "<br><br><a href='show_results.php'>ПОСМОТРЕТЬ ВСЕ ЗАКАЗЫ ИЗ БД</a> <br>";?>
+    <br><a href='show_results.php'>ПОСМОТРЕТЬ ВСЕ ЗАКАЗЫ ИЗ БД</a>
 </body>
 </html>

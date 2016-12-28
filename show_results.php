@@ -1,8 +1,11 @@
 <?php
-//коннект к БД
-include("database/db_connect.php");
-include ("model/Accessories.php");
-$accessories = new Accessories($connection);
+include("database/BDinfo.php");
+
+spl_autoload_register(function($class){
+    include_once('model/'.$class.'.php');
+});
+
+$accessories = new Accessories($host, $login, $password, $db);
 
 $max_posts = 4;//кол-во записей на странице
 
@@ -11,7 +14,7 @@ $max_posts = 4;//кол-во записей на странице
         $num_pages = ceil($num_posts / $max_posts);
 
         if (isset($_GET['page']) && is_numeric($_GET['page'])) { // is_numeric - Проверяет, является ли переменная числом или строкой, содержащей число
-            $get_page = $_GET['page'];
+            $get_page = htmlentities($_GET['page'], ENT_QUOTES);
             if ($get_page > 0 && $get_page <= $num_pages) {
                 $start = ($get_page - 1) * $max_posts;
             } else {
@@ -68,9 +71,7 @@ $max_posts = 4;//кол-во записей на странице
             <th>Дата</th>
         </tr>
 <?php
-        $accessories = new Accessories($connection);
-        $tableAll = $accessories->getResultsFromBD($start, $max_posts);
-
+    $tableAll = $accessories->getResultsFromBD($start, $max_posts);
     foreach ($tableAll as $res):
 ?>
             <tr class="elements">
