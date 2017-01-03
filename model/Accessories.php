@@ -45,45 +45,44 @@ class Accessories extends Model
         $num_posts = $result->num_rows;
         return $num_posts;
     }
-
+    
     function insertInBd()
     {
-        $motherboard = explode("|", htmlentities($_POST['motherboard'], ENT_QUOTES));
-        $video_card = explode("|", htmlentities($_POST['video_card'], ENT_QUOTES));
-        $ram = explode("|", htmlentities($_POST['ram'], ENT_QUOTES));
-        $hd = explode("|", htmlentities($_POST['hd'], ENT_QUOTES));
+        $motherboard = htmlentities($_POST['motherboard'], ENT_QUOTES);
+        $video_card = htmlentities($_POST['video_card'], ENT_QUOTES);
+        $ram = htmlentities($_POST['ram'], ENT_QUOTES);
+        $hd = htmlentities($_POST['hd'], ENT_QUOTES);
 
-        if ((isset($motherboard[1], $video_card[1], $ram[1], $hd[1], $motherboard[2], $video_card[2], $ram[2], $hd[2])) && (is_numeric($motherboard[2]) && is_numeric($video_card[2]) && is_numeric($ram[2]) && is_numeric($hd[2]))) {
+        if (is_numeric($motherboard) && is_numeric($video_card) && is_numeric($ram) && is_numeric($hd)) {
+            $result = $this->connection->query("SELECT * FROM comp_shop.motherboard WHERE id = $motherboard");
+            $motherboard = $result->fetch_assoc();
 
-            $sum = $motherboard[2] + $video_card[2] + $ram[2] + $hd[2];
+            $result = $this->connection->query("SELECT * FROM comp_shop.video_card WHERE id = $video_card");
+            $video_card = $result->fetch_assoc();
+
+            $result = $this->connection->query("SELECT * FROM comp_shop.ram WHERE id = $ram");
+            $ram = $result->fetch_assoc();
+
+            $result = $this->connection->query("SELECT * FROM comp_shop.hd WHERE id = $hd");
+            $hd = $result->fetch_assoc();
+
+            if (isset($motherboard, $video_card, $ram, $hd)) {
+
+                $sum = ($motherboard['price'] + $video_card['price'] + $ram['price'] + $hd['price']);
+                $table = [$motherboard['model'], $video_card['model'], $ram['model'], $hd['model'], $sum];
 
             $result = $this->connection->prepare("INSERT comp_shop.order_list (motherboard, video_card, ram, hd, total) VALUES (?, ?, ?, ?, ?)");
-            $result->bind_param("ssssi", $motherboard[1], $video_card[1], $ram[1], $hd[1], $sum);
+            $result->bind_param("ssssi", $motherboard['model'], $video_card['model'], $ram['model'], $hd['model'], $sum);
             $result->execute();
             $result->close();
 
-            $table = [$motherboard[1], $video_card[1], $ram[1], $hd[1], $sum];
-
-            return $table;
+                return $table;
+            } else {
+                return false;//число, но значение не верное. Меньше 0 или больше кол-ва строк в таблице(БД)
+            }
         } else {
-            return false;
+            return false;//post не число
         }
     }
-
-//--Второй вариант
-//    function insertInBd()
-//    {
-////        1. Передаем в $_POST только id
-////        2. Проверяем его на integer, htmlspecialchars, filter_input и т.д.
-////        3. Создаем запрос к БД на поиск нужного компонента в нужной таблице
-////        4. Получаем массив "чистых" данных из БД и уже работаем с ними
-////        5. Повторяем для каждого компонента (4 раза)
-////
-////        6. Для записи в БД используем подготовленный запрос всё равно
-////        6.5 Так же весь этот метод стоит вынести в отдельный класс
-////
-////    Не знаю что лучше: передать небольшие строки из формы и всячески их проверять, либо делать еще +4 запроса к БД
-////    Первый вариант выглядит компактнее и менее затратным по ресурсам, второй более надежным.
-//    }
 
 }
