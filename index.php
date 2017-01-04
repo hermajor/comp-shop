@@ -11,8 +11,7 @@ $motherboard = $accessories->getAccessories('motherboard');
 $video_card = $accessories->getAccessories('video_card');
 $ram = $accessories->getAccessories('ram');
 $hd = $accessories->getAccessories('hd');
-
-$emptyValueStr = '0|-|0|0|0|0|0|0';//строка-"массив" который будем подставлять в форму по умолчанию(при пустых значениях)
+//В каждой таблице БД есть нулевая строка со значениями id = 0, name = '-', price = 0 и т.д. = '-'
 ?>
 
 <!DOCTYPE HTML>
@@ -28,44 +27,37 @@ $emptyValueStr = '0|-|0|0|0|0|0|0';//строка-"массив" который 
             <h4>Эта форма покажет результат и запишет в БД</h4>
             Материнская плата:
             <select size="1" name="motherboard">
-                <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
+<!--                <option value='0' selected>-</option>-->
                 <?php
                 foreach ($motherboard as $key=>$mod){
-                    $arraystr = implode("|", $mod);//записываем массив в строку - элементы разделены запятой ","
-                    echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";//value формы может передавать только строки
+                    echo "<option value='" . $mod['id'] . "'>" . $mod['model'] . "</option>";//value формы может передавать только строки
                 }
                 ?>
             </select><br><br>
 
             Видео карта:
             <select size="1" name="video_card">
-                <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
                 foreach ($video_card as $mod){
-                    $arraystr = implode("|", $mod);
-                    echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";
+                    echo "<option value='" . $mod['id'] . "'>" . $mod['model'] . "</option>";
                 }
                 ?>
             </select><br><br>
 
             Оперативная память:
             <select size="1" name="ram">
-                <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
                 foreach ($ram as $mod){
-                    $arraystr = implode("|", $mod);
-                    echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";
+                    echo "<option value='" . $mod['id'] . "'>" . $mod['model'] . "</option>";
                 }
                 ?>
             </select><br><br>
 
             Жесткий диск:
             <select size="1" name="hd">
-                <option value='<?php echo $emptyValueStr; ?>' selected>-</option>
                 <?php
                 foreach ($hd as $mod){
-                    $arraystr = implode("|", $mod);
-                    echo "<option value='" . $arraystr . "'>" . $mod['model'] . "</option>";
+                    echo "<option value='" . $mod['id'] . "'>" . $mod['model'] . "</option>";
                 }
                 ?>
             </select><br><br>

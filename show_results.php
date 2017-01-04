@@ -7,7 +7,7 @@ spl_autoload_register(function($class){
 
 $accessories = new Accessories($host, $login, $password, $db);
 
-$max_posts = 4;//кол-во записей на странице
+$max_posts = 10;//кол-во записей на странице
 
     if ($accessories->getNumberPostsFromBD() != 0) { //Смотрим $result->num_rows
         $num_posts = $accessories->getNumberPostsFromBD();//записываем кол-во всех строк из БД по num_rows
