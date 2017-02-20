@@ -1,4 +1,12 @@
 <?php
+//namespace PHP_TASK;
+include "PHP_TASK/ErrorHandler.php";
+
+(new PHP_TASK\ErrorHandler())->register();
+//foo();
+//echo $var;
+
+/*
 include("database/BDinfo.php");
 
 spl_autoload_register(function($class){
@@ -69,3 +77,4 @@ $hd = $accessories->getAccessories('hd');
     <br><a href='show_results.php'>ПОСМОТРЕТЬ ВСЕ ЗАКАЗЫ ИЗ БД</a>
 </body>
 </html>
+*/
